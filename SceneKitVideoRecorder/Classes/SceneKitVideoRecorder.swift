@@ -44,7 +44,7 @@ public class SceneKitVideoRecorder: NSObject, AVAudioRecorderDelegate {
   private var videoFramesWritten: Bool = false
   private var waitingForPermissions: Bool = false
 
-  private var renderer: SCNRenderer!
+  public var renderer: SCNRenderer!
 
   public var updateFrameHandler: ((_ image: UIImage) -> Void)? = nil
   private var finishedCompletionHandler: ((_ url: URL) -> Void)? = nil
