@@ -18,7 +18,7 @@ public class SceneKitVideoRecorder: NSObject, AVAudioRecorderDelegate {
   var audioRecorder: AVAudioRecorder!
 
   private var pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor!
-  private var options: Options
+  public var options: Options
 
   private let frameQueue = DispatchQueue(label: "com.svtek.SceneKitVideoRecorder.frameQueue")
   private let bufferQueue = DispatchQueue(label: "com.svtek.SceneKitVideoRecorder.bufferQueue", attributes: .concurrent)
@@ -112,7 +112,7 @@ public class SceneKitVideoRecorder: NSObject, AVAudioRecorderDelegate {
     return output
   }
 
-  public func setupAudio() {
+  public func setupAudio(completion: ((_ isGranted: Bool) -> Void)?) {
 
     recordingSession = AVAudioSession.sharedInstance()
 
@@ -126,13 +126,19 @@ public class SceneKitVideoRecorder: NSObject, AVAudioRecorderDelegate {
           } else {
             self.options.useMicrophone = false
           }
+          completion?(self.options.useMicrophone)
         }
       }
       isAudioSetup = true
     } catch {
       self.options.useMicrophone = false
+      completion?(self.options.useMicrophone)
     }
 
+  }
+
+  public func setupAudio() {
+    setupAudio(completion: nil)
   }
 
   private func startRecordingAudio() {
