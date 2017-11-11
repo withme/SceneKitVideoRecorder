@@ -40,7 +40,6 @@ public class SceneKitVideoRecorder: NSObject, AVAudioRecorderDelegate {
 
   private var useAudio: Bool {
     return options.useMicrophone && AVAudioSession.sharedInstance().recordPermission() == .granted && isAudioSetup
-
   }
   private var videoFramesWritten: Bool = false
   private var waitingForPermissions: Bool = false
@@ -118,7 +117,7 @@ public class SceneKitVideoRecorder: NSObject, AVAudioRecorderDelegate {
     recordingSession = AVAudioSession.sharedInstance()
 
     do {
-      try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+      try recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord, mode: AVAudioSessionModeVideoRecording, options: [.mixWithOthers])
       try recordingSession.setActive(true)
       recordingSession.requestRecordPermission() { allowed in
         DispatchQueue.main.async {
